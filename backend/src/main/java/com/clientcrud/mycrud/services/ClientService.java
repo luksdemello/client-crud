@@ -2,6 +2,8 @@ package com.clientcrud.mycrud.services;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +33,7 @@ public class ClientService {
 	@Transactional(readOnly = true)
 	public ClientDTO findByID(Long id) {
 		Optional<Client> obj = repository.findById(id);
-		Client entity = obj.get();
+		Client entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found!"));
 		
 		return new ClientDTO(entity);
 	}
